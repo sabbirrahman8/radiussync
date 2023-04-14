@@ -10,11 +10,18 @@ use \RouterOS\Client;
 use \RouterOS\Query;
 
 
+
+$manager = $argv[1];
+
 // Connect to the MySQL database
-$db_host = '103.102.216.138';
-$db_user = 'radius';
-$db_pass = 'radius123';
-$db_name = 'radius';
+$db_host = $argv[2];
+$db_user = $argv[3];
+$db_pass = $argv[4];
+$db_name = $argv[5];
+
+
+
+
 $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
 // Get the list of routers from the database
@@ -65,11 +72,11 @@ foreach ($routers as $router) {
                    '=disabled=yes']);
 	$response = $client->query($query)->read();
         
-        if (!isset($response['after']['message'])) {
-		echo $pppoe_username." - User Added ;";
-		} else{
-			echo $pppoe_username." - ".$response['after']['message'].";";
-			}
+         if (!isset($response['after']['message'])) {
+                echo $router['nasname']." - ".$pppoe_username." - User Added ;";
+                } else{
+                        echo $router['nasname']." - ".$pppoe_username." - ".$response['after']['message'].";";
+                        }
 }
 	
 
