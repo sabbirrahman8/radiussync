@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 
 use \RouterOS\Client;
 use \RouterOS\Query;
+use \RouterOS\Exceptions\ConnectException;
 
 
 
@@ -25,7 +26,11 @@ $db_name = $argv[5];
 $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
 // Get the list of routers from the database
-$sql = "select nasname,apiusername,apipassword from nas where apiusername !='' and apipassword !=''";
+$sql = "SELECT DISTINCT nas.nasname,nas.apiusername,nas.apipassword
+FROM nas
+JOIN rm_allowednases ON nas.id = rm_allowednases.nasid
+JOIN rm_allowedmanagers ON rm_allowednases.srvid = rm_allowedmanagers.srvid
+WHERE rm_allowedmanagers.managername = '$manager' and apiusername !='' and apipassword !=''";
 $result = mysqli_query($conn, $sql);
 $routers = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
