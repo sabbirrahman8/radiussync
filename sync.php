@@ -62,6 +62,7 @@ foreach ($routers as $router) {
      throw new Exception('An error occurred');
     } catch (Exception $e) {
         // Code to handle the exception
+	   echo 'Caught exception: ',  $e->getMessage(), "\n";
     }
 
      foreach ($pppoe_users as $pppoe_user) {
