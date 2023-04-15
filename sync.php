@@ -60,8 +60,12 @@ foreach ($routers as $router) {
         'user'    => $router['apiusername'],
         'pass'    => $router['apipassword']
     ]);
-     throw new Exception('An error occurred');
+     //throw new Exception('An error occurred');
     } catch (BadCredentialsException $e) {
+        if (count($routers) > 1) {
+	 continue;
+	} else { exit();}
+     } catch (ConnectException $e) {
         if (count($routers) > 1) {
 	 continue;
 	} else { exit();}
