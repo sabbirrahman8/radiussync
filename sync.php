@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 use \RouterOS\Client;
 use \RouterOS\Query;
 use \RouterOS\Exceptions\ConnectException;
+use \RouterOS\Exceptions\BadCredentialsException;
 
 
 
@@ -60,10 +61,11 @@ foreach ($routers as $router) {
         'pass'    => $router['apipassword']
     ]);
      throw new Exception('An error occurred');
-    } catch (Exception $e) {
-        // Code to handle the exception
-	   echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
+    } catch (BadCredentialsException $e) {
+        if (count($routers) > 1) {
+	 continue;
+	} else { exit();}
+     }
 
      foreach ($pppoe_users as $pppoe_user) {
 	$pppoe_username=$pppoe_user['username'];
